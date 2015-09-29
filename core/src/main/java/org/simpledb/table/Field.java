@@ -19,11 +19,11 @@ public class Field {
         type.getWriter().write(address, value);
     }
 
-    public long getSize() {
-        return type.getSize();
+    public long getSize(long ptr) {
+        return type.getReader().getSize(ptr);
     }
 
-    public Object read(long address) {
+    public Comparable read(long address) {
         return type.getReader().read(address);
     }
 
@@ -31,7 +31,8 @@ public class Field {
         return indexing;
     }
 
-    public Reader getReader() {
-        return type.getReader();
+
+    public int getSize(Comparable value) {
+        return type.getWriter().getSize(value);
     }
 }

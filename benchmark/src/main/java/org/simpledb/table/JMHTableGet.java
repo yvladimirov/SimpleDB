@@ -101,7 +101,7 @@ public class JMHTableGet {
         return tableLongAndString.findOne(1, "100000");
     }
 
-        @Benchmark
+    @Benchmark
     public Long hashMap() {
         return map.get(100000l);
     }

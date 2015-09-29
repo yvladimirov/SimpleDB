@@ -11,34 +11,25 @@ import static org.simpledb.utils.UnsafeUtils.unsafe;
  * Created by yvladimirov on 9/25/15.
  */
 public class Table {
-    private final Field[] fields;
-    private final long allocated;
+    private final Fields fields;
     private TLongArrayList addresses = new TLongArrayList();
     private TIntObjectHashMap<Index> indexes = new TIntObjectHashMap<>();
 
     public Table(Field[] fields) {
-        this.fields = fields;
-        long allocated = 0;
+        this.fields = new Fields(fields);
         for (int i = 0; i < fields.length; i++) {
             Field f = fields[i];
             if (f.isIndexing()) {
-                indexes.put(i, new Index(1000, f.getReader(), allocated, i));
+                indexes.put(i, new Index(1000, this.fields, i));
             }
-            allocated += f.getSize();
         }
-        this.allocated = allocated;
     }
 
     public void add(Comparable... values) {
-        if (values.length != fields.length)
+        if (values.length != fields.size())
             throw new RuntimeException("Values != Fields");
 
-        long address = unsafe.allocateMemory(allocated);
-        long offset = address;
-        for (int i = 0; i < fields.length; i++) {
-            fields[i].write(offset, values[i]);
-            offset += fields[i].getSize();
-        }
+        long address = fields.write(values);
         for (Index index : indexes.valueCollection()) {
             index.put(values[index.getFieldNumber()], address);
         }
@@ -47,17 +38,11 @@ public class Table {
 
 
     public Object[] findOne() {
-        Object[] result = new Object[fields.length];
         for (int i = 0; i < addresses.size(); i++) {
             long address = addresses.get(i);
-
-            for (int y = 0; y < fields.length; y++) {
-                result[y] = fields[y].read(address);
-                address += fields[y].getSize();
-            }
-            break;
+            return fields.getValues(address);
         }
-        return result;
+        return null;
     }
 
     public Object[] findOne(int fieldNumber, Comparable value) {
@@ -66,27 +51,18 @@ public class Table {
             Index.Entry entry = index.get(value);
             long[] addresses = entry.getAddresses();
             for (int i = 0; i < entry.size(); i++) {
-                Object[] result = read(addresses[i]);
+                Object[] result = fields.getValues(addresses[i]);
                 if (result[fieldNumber].equals(value))
                     return result;
             }
         } else {
             for (int i = 0; i < addresses.size(); i++) {
-                Object[] result = read(addresses.get(i));
+                Object[] result = fields.getValues(addresses.get(i));
                 if (result[fieldNumber].equals(value))
                     return result;
             }
         }
         return null;
-    }
-
-    private Object[] read(long address) {
-        Object[] result = new Object[fields.length];
-        for (int y = 0; y < fields.length; y++) {
-            result[y] = fields[y].read(address);
-            address += fields[y].getSize();
-        }
-        return result;
     }
 
     public void drop() {
@@ -95,7 +71,4 @@ public class Table {
         }
     }
 
-    public TIntObjectHashMap<Index> getIndexes() {
-        return indexes;
-    }
 }

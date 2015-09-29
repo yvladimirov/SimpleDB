@@ -22,7 +22,7 @@ public class JMHTablePut {
     Table tableStringAndLong;
     Table tableBig;
     long counter;
-    Map<Long,Long> map;
+    Map<Long, Long> map;
 
     @Setup(Level.Iteration)
     public void prepare() {
@@ -99,9 +99,9 @@ public class JMHTablePut {
 
 
     @Benchmark
-    public void hashMap(){
+    public void hashMap() {
         counter++;
-        map.put(counter,counter);
+        map.put(counter, counter);
     }
 
 

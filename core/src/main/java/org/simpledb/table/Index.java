@@ -21,14 +21,12 @@ public class Index {
     };
     private final RangeMap<Comparable, Entry> map = TreeRangeMap.create();
     private final int MAX_ELEMENT;
-    private final Reader reader;
-    private final long offset;
+    private final Fields fields;
     private final int fieldNumber;
 
-    public Index(int capacity, Reader reader, long offset, int fieldNumber) {
+    public Index(int capacity, Fields fields, int fieldNumber) {
         this.MAX_ELEMENT = capacity;
-        this.reader = reader;
-        this.offset = offset;
+        this.fields = fields;
         this.fieldNumber = fieldNumber;
         map.put(Range.all(), new Entry());
     }
@@ -49,12 +47,12 @@ public class Index {
         Pair<Long, Comparable>[] pairs = new Pair[MAX_ELEMENT];
         for (int i = 0; i < MAX_ELEMENT; i++) {
             long address = mapEntry.getValue().address[i];
-            pairs[i] = new Pair(address, reader.read(address + offset));
+            pairs[i] = new Pair(address, fields.getValue(address, fieldNumber));
         }
 
         Arrays.sort(pairs, COMPARATOR);
 
-        int center = MAX_ELEMENT / 2-1;
+        int center = MAX_ELEMENT / 2 - 1;
 
         Entry entry1 = new Entry();
         Entry entry2 = new Entry();
