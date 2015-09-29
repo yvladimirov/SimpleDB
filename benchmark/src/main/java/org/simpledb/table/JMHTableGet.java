@@ -5,6 +5,8 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.simpledb.builder.FieldBuilder;
+import org.simpledb.builder.TableBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,24 +28,38 @@ public class JMHTableGet {
     @Setup(Level.Trial)
     public void prepare() {
         map = new HashMap<>();
-        tableLongWithoutIndex = new Table(new Field[]{new Field(FieldType.LONG, "test_long_field", false)});
-        tableLong = new Table(new Field[]{new Field(FieldType.LONG, "test_long_field", true)});
-        tableStringWithoutIndex = new Table(new Field[]{new Field(FieldType.STRING, "test_string_field", false)});
-        tableString = new Table(new Field[]{new Field(FieldType.STRING, "test_string_field", true)});
-        tableLongAndStringWithoutIndex = new Table(new Field[]{new Field(FieldType.LONG, "test_long_field", false), new Field(FieldType.STRING, "test_string_field", false)});
-        tableLongAndString = new Table(new Field[]{new Field(FieldType.LONG, "test_long_field", true), new Field(FieldType.STRING, "test_string_field", true)});
-        tableBig = new Table(new Field[]{
-                new Field(FieldType.LONG, "test_long_field", true),
-                new Field(FieldType.LONG, "test_long_field1", false),
-                new Field(FieldType.LONG, "test_long_field2", false),
-                new Field(FieldType.STRING, "test_string_field", true),
-                new Field(FieldType.STRING, "test_string_field1", false),
-                new Field(FieldType.STRING, "test_string_field2", false),
-                new Field(FieldType.STRING, "test_string_field3", false),
-                new Field(FieldType.LONG, "test_long_field3", false),
-                new Field(FieldType.LONG, "test_long_field4", false),
-                new Field(FieldType.STRING, "test_string_field4", true)
-        });
+        tableLongWithoutIndex = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("test_long_field").type(FieldType.LONG).build())
+                .build();
+        tableLong = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("test_long_field").type(FieldType.LONG).indexing(true).build())
+                .build();
+        tableStringWithoutIndex = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("test_string_field").type(FieldType.STRING).build())
+                .build();
+        tableString = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("test_string_field").type(FieldType.STRING).indexing(true).build())
+                .build();
+        tableLongAndStringWithoutIndex = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("test_long_field").type(FieldType.LONG).build())
+                .addField(FieldBuilder.builder().name("test_string_field").type(FieldType.STRING).build())
+                .build();
+        tableLongAndString = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("test_long_field").type(FieldType.LONG).indexing(true).build())
+                .addField(FieldBuilder.builder().name("test_string_field").type(FieldType.STRING).indexing(true).build())
+                .build();
+        tableBig = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("test_long_field").type(FieldType.LONG).indexing(true).build())
+                .addField(FieldBuilder.builder().name("test_long_field1").type(FieldType.LONG).build())
+                .addField(FieldBuilder.builder().name("test_long_field2").type(FieldType.LONG).build())
+                .addField(FieldBuilder.builder().name("test_string_field").type(FieldType.STRING).indexing(true).build())
+                .addField(FieldBuilder.builder().name("test_string_field1").type(FieldType.STRING).build())
+                .addField(FieldBuilder.builder().name("test_string_field2").type(FieldType.STRING).build())
+                .addField(FieldBuilder.builder().name("test_string_field3").type(FieldType.STRING).build())
+                .addField(FieldBuilder.builder().name("test_long_field3").type(FieldType.LONG).build())
+                .addField(FieldBuilder.builder().name("test_long_field4").type(FieldType.LONG).build())
+                .addField(FieldBuilder.builder().name("test_string_field4").type(FieldType.STRING).indexing(true).build())
+                .build();
         for (long i = 0; i < 1000 * 1000; i++) {
             map.put(i, i);
             tableLongWithoutIndex.add(i);

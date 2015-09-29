@@ -11,11 +11,13 @@ import static org.simpledb.utils.UnsafeUtils.unsafe;
  * Created by yvladimirov on 9/25/15.
  */
 public class Table {
+    private final String name;
     private final Fields fields;
     private TLongArrayList addresses = new TLongArrayList();
     private TIntObjectHashMap<Index> indexes = new TIntObjectHashMap<>();
 
-    public Table(Field[] fields) {
+    public Table(String name, Field[] fields) {
+        this.name = name;
         this.fields = new Fields(fields);
         for (int i = 0; i < fields.length; i++) {
             Field f = fields[i];
@@ -24,6 +26,7 @@ public class Table {
             }
         }
     }
+
 
     public void add(Comparable... values) {
         if (values.length != fields.size())

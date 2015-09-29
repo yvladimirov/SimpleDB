@@ -1,6 +1,8 @@
 package org.simpledb.table;
 
 import org.junit.Test;
+import org.simpledb.builder.FieldBuilder;
+import org.simpledb.builder.TableBuilder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -12,7 +14,9 @@ public class TableTest {
 
     @Test
     public void testLongTablePutAndGetNotIndex() {
-        Table table = new Table(new Field[]{new Field(FieldType.LONG, "long", false)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).build())
+                .build();
         table.add(1l);
 
         Object[] result = table.findOne(0, 1l);
@@ -28,7 +32,10 @@ public class TableTest {
 
     @Test
     public void testLongTablePutAndGetNotIndexTwoField() {
-        Table table = new Table(new Field[]{new Field(FieldType.LONG, "long", false), new Field(FieldType.LONG, "long2", false)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).build())
+                .addField(FieldBuilder.builder().name("long2").type(FieldType.LONG).build())
+                .build();
         table.add(1l, 5l);
 
         Object[] result = table.findOne(0, 1l);
@@ -49,7 +56,9 @@ public class TableTest {
 
     @Test
     public void testLongTablePutAndGet() {
-        Table table = new Table(new Field[]{new Field(FieldType.LONG, "long", true)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).indexing(true).build())
+                .build();
         table.add(1l);
 
         Object[] result = table.findOne(0, 1l);
@@ -65,7 +74,10 @@ public class TableTest {
 
     @Test
     public void testLongTablePutAndGetTwoField() {
-        Table table = new Table(new Field[]{new Field(FieldType.LONG, "long", true), new Field(FieldType.LONG, "long2", true)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).indexing(true).build())
+                .addField(FieldBuilder.builder().name("long2").type(FieldType.LONG).indexing(true).build())
+                .build();
         table.add(1l, 5l);
 
         Object[] result = table.findOne(0, 1l);
@@ -86,7 +98,9 @@ public class TableTest {
 
     @Test
     public void testStringTablePutAndGetNotIndex() {
-        Table table = new Table(new Field[]{new Field(FieldType.STRING, "string", false)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("string").type(FieldType.STRING).build())
+                .build();
         table.add("1l");
 
         Object[] result = table.findOne(0, "1l");
@@ -102,7 +116,11 @@ public class TableTest {
 
     @Test
     public void testStringTablePutAndGetNotIndexTwoField() {
-        Table table = new Table(new Field[]{new Field(FieldType.STRING, "string", false), new Field(FieldType.STRING, "string2", false)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("string").type(FieldType.STRING).build())
+                .addField(FieldBuilder.builder().name("string2").type(FieldType.STRING).build())
+                .build();
+
         table.add("1l", "5l");
 
         Object[] result = table.findOne(0, "1l");
@@ -123,7 +141,10 @@ public class TableTest {
 
     @Test
     public void testStringTablePutAndGet() {
-        Table table = new Table(new Field[]{new Field(FieldType.STRING, "string", true)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("string").type(FieldType.STRING).indexing(true).build())
+                .build();
+
         table.add("1l");
 
         Object[] result = table.findOne(0, "1l");
@@ -139,7 +160,11 @@ public class TableTest {
 
     @Test
     public void testStringTablePutAndGetTwoField() {
-        Table table = new Table(new Field[]{new Field(FieldType.STRING, "string", true), new Field(FieldType.STRING, "string2", true)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("string").type(FieldType.STRING).indexing(true).build())
+                .addField(FieldBuilder.builder().name("string2").type(FieldType.STRING).indexing(true).build())
+                .build();
+
         table.add("1l", "5l");
 
         Object[] result = table.findOne(0, "1l");
@@ -159,7 +184,9 @@ public class TableTest {
 
     @Test
     public void testLongKK() {
-        Table table = new Table(new Field[]{new Field(FieldType.LONG, "long", true)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).indexing(true).build())
+                .build();
 
         for (long l = 0; l < 1000000; l++) {
             table.add(l);
@@ -176,7 +203,9 @@ public class TableTest {
 
     @Test
     public void testLongSplitingIndex() {
-        Table table = new Table(new Field[]{new Field(FieldType.LONG, "long", true)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).indexing(true).build())
+                .build();
 
         for (long l = 0; l < 1000000; l++) {
             table.add(l);
@@ -194,7 +223,9 @@ public class TableTest {
 
     @Test
     public void testStringSplitingIndex() {
-        Table table = new Table(new Field[]{new Field(FieldType.STRING, "string", true)});
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("string").type(FieldType.STRING).indexing(true).build())
+                .build();
 
         for (long l = 0; l < 1000000; l++) {
             table.add("" + l);
