@@ -10,7 +10,8 @@ public enum FieldType {
     LONG(new LongWriter(), new LongReader()),
     STRING(new StringWriter(), new StringReader()),
     BOOLEAN(new BooleanWriter(), new BooleanReader()),
-    INTEGER(new IntegerWriter(), new IntegerReader());
+    INTEGER(new IntegerWriter(), new IntegerReader()),
+    BYTES(new BytesWriter(), new BytesReader());
 
     private Writer writer;
     private Reader reader;

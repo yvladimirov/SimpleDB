@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.simpledb.table.reader.*;
 import org.simpledb.table.writer.*;
 
+import java.nio.ByteBuffer;
+
 import static org.junit.Assert.assertEquals;
 import static org.simpledb.utils.UnsafeUtils.unsafe;
 
@@ -82,6 +84,27 @@ public class ReadWriteTest {
 
 
             assertEquals(test.length() * 2 + 4, reader.getSize(address));
+            assertEquals(test, reader.read(address));
+        } finally {
+            unsafe.freeMemory(address);
+        }
+    }
+
+    @Test
+    public void bytesWriteReadTest() {
+        ByteBuffer test = ByteBuffer.wrap("Hello world!".getBytes());
+        int length = test.array().length;
+        long address = unsafe.allocateMemory(length + 4);
+        try {
+            Writer writer = new BytesWriter();
+            Reader reader = new BytesReader();
+
+
+            assertEquals(length + 4, writer.getSize(test));
+            assertEquals(address + length + 4, writer.write(address, test));
+
+
+            assertEquals(length + 4, reader.getSize(address));
             assertEquals(test, reader.read(address));
         } finally {
             unsafe.freeMemory(address);

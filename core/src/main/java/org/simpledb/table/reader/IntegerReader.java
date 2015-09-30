@@ -12,7 +12,7 @@ public class IntegerReader implements Reader {
     }
 
     @Override
-    public long getSize(long ptr) {
+    public int getSize(long ptr) {
         return 4;
     }
 }

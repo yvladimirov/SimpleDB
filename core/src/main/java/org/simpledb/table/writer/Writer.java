@@ -1,7 +1,5 @@
 package org.simpledb.table.writer;
 
-import static org.simpledb.utils.UnsafeUtils.unsafe;
-
 /**
  * Created by yvladimirov on 9/25/15.
  */

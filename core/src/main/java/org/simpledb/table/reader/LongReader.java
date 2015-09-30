@@ -13,7 +13,7 @@ public class LongReader implements Reader<Long> {
     }
 
     @Override
-    public long getSize(long ptr) {
+    public int getSize(long ptr) {
         return 8;
     }
 }

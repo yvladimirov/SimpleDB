@@ -9,11 +9,11 @@ import static org.simpledb.utils.UnsafeUtils.unsafe;
 public class BooleanReader implements Reader {
     @Override
     public Comparable read(long address) {
-        return unsafe.getBoolean(null,address);
+        return unsafe.getBoolean(null, address);
     }
 
     @Override
-    public long getSize(long ptr) {
+    public int getSize(long ptr) {
         return 1;
     }
 }

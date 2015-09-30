@@ -20,7 +20,7 @@ public class StringReader implements Reader<String> {
     }
 
     @Override
-    public long getSize(long ptr) {
+    public int getSize(long ptr) {
         int length = unsafe.getInt(ptr);
         return length * 2 + 4;
     }
