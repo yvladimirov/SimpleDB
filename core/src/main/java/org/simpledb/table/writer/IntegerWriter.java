@@ -7,9 +7,9 @@ import static org.simpledb.utils.UnsafeUtils.unsafe;
  */
 public class IntegerWriter implements Writer {
     @Override
-    public long write(long address, Object value) {
-        unsafe.putInt(address, (Integer) value);
-        return address + 4;
+    public long write(long ptr, Object value) {
+        unsafe.putInt(ptr, (Integer) value);
+        return ptr + 4;
     }
 
     @Override

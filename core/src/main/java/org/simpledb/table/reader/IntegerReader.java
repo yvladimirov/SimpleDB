@@ -7,8 +7,8 @@ import static org.simpledb.utils.UnsafeUtils.unsafe;
  */
 public class IntegerReader implements Reader {
     @Override
-    public Comparable read(long address) {
-        return unsafe.getInt(address);
+    public Comparable read(long ptr) {
+        return unsafe.getInt(ptr);
     }
 
     @Override

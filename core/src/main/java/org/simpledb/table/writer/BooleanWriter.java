@@ -7,9 +7,9 @@ import static org.simpledb.utils.UnsafeUtils.unsafe;
  */
 public class BooleanWriter implements Writer {
     @Override
-    public long write(long address, Object value) {
-        unsafe.putBoolean(null, address, (Boolean) value);
-        return address + 1;
+    public long write(long ptr, Object value) {
+        unsafe.putBoolean(null, ptr, (Boolean) value);
+        return ptr + 1;
     }
 
     @Override

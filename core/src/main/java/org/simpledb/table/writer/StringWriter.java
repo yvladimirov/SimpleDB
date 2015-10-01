@@ -7,15 +7,15 @@ import static org.simpledb.utils.UnsafeUtils.unsafe;
  */
 public class StringWriter implements Writer<String> {
     @Override
-    public long write(long address, String value) {
+    public long write(long ptr, String value) {
 
-        unsafe.putInt(address, value.length());
-        address += 4;
+        unsafe.putInt(ptr, value.length());
+        ptr += 4;
         for (int i = 0; i < value.length(); i++) {
-            unsafe.putChar(address, value.charAt(i));
-            address += 2;
+            unsafe.putChar(ptr, value.charAt(i));
+            ptr += 2;
         }
-        return address;
+        return ptr;
     }
 
     @Override

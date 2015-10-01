@@ -8,8 +8,8 @@ import static org.simpledb.utils.UnsafeUtils.unsafe;
 public class LongReader implements Reader<Long> {
 
     @Override
-    public Long read(long address) {
-        return unsafe.getLong(address);
+    public Long read(long ptr) {
+        return unsafe.getLong(ptr);
     }
 
     @Override

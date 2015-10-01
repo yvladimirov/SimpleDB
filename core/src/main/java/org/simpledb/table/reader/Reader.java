@@ -5,7 +5,7 @@ package org.simpledb.table.reader;
  */
 public interface Reader<T extends Comparable> {
 
-    public T read(long address);
+    public T read(long ptr);
 
     int getSize(long ptr);
 

@@ -8,8 +8,8 @@ import static org.simpledb.utils.UnsafeUtils.unsafe;
  */
 public class BooleanReader implements Reader {
     @Override
-    public Comparable read(long address) {
-        return unsafe.getBoolean(null, address);
+    public Comparable read(long ptr) {
+        return unsafe.getBoolean(null, ptr);
     }
 
     @Override
