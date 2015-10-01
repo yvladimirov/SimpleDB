@@ -240,4 +240,56 @@ public class TableTest {
         table.drop();
 
     }
+
+
+    @Test
+    public void testDeleteString() {
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("string").type(FieldType.STRING).indexing(true).build())
+                .build();
+
+        table.add("test");
+
+        Object[] result = table.findOne(0, "test");
+        assertEquals(1, result.length);
+        assertEquals("test", result[0]);
+
+        result = table.remove(0, "test");
+        assertEquals(1, result.length);
+        assertEquals("test", result[0]);
+
+        result = table.findOne(0, "test");
+        assertNull(result);
+
+        table.drop();
+
+    }
+
+    @Test
+    public void testDeleteIntegerSplit() {
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("int").type(FieldType.INTEGER).indexing(true).build())
+                .build();
+
+        for (int i = 0; i <= 1000; i++)
+            table.add(i);
+
+        for (int i = 499; i <= 1000; i++) {
+            Object[] result = table.remove(0, i);
+            assertEquals(1, result.length);
+            assertEquals(i, result[0]);
+        }
+
+        for (int i = 499; i <= 1000; i++)
+            table.add(i);
+
+        for (int i = 0; i <= 499; i++) {
+            Object[] result = table.remove(0, i);
+            assertEquals(1, result.length);
+            assertEquals(i, result[0]);
+        }
+
+        table.drop();
+
+    }
 }

@@ -51,9 +51,9 @@ public class Table {
     public Object[] findOne(int fieldNumber, Comparable value) {
         Index index = indexes.get(fieldNumber);
         if (index != null) {
-            Index.Entry entry = index.get(value);
-            long[] addresses = entry.getAddresses();
-            for (int i = 0; i < entry.size(); i++) {
+            Index.Segment segment = index.get(value);
+            long[] addresses = segment.getAddresses();
+            for (int i = 0; i < segment.size(); i++) {
                 Object[] result = fields.getValues(addresses[i]);
                 if (result[fieldNumber].equals(value))
                     return result;
@@ -66,6 +66,37 @@ public class Table {
             }
         }
         return null;
+    }
+
+    public Comparable[] remove(int fieldNumber, Comparable value) {
+        Index index = indexes.get(fieldNumber);
+        long address = 0;
+        if (index != null) {
+            Index.Segment segment = index.get(value);
+            long[] addresses = segment.getAddresses();
+            for (int i = 0; i < segment.size(); i++) {
+                Object[] result = fields.getValues(addresses[i]);
+                if (result[fieldNumber].equals(value)) {
+                    address = addresses[i];
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < addresses.size(); i++) {
+                Object[] result = fields.getValues(addresses.get(i));
+                if (result[fieldNumber].equals(value)) {
+                    address = addresses.get(i);
+                    break;
+                }
+            }
+        }
+        addresses.remove(address);
+        Comparable[] result = fields.getValues(address);
+        for (Index i : indexes.valueCollection()) {
+            i.remove(address, result[i.getFieldNumber()]);
+        }
+        unsafe.freeMemory(address);
+        return result;
     }
 
     public void drop() {
