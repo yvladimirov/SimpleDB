@@ -1,4 +1,5 @@
 # SimpleDB
+[![Build Status](https://travis-ci.org/yvladimirov/SimpleDB.svg)](https://travis-ci.org/yvladimirov/SimpleDB)
 
 
 Simple in memory offheap Database. Index in heap, data in direct memory
