@@ -7,8 +7,3 @@ jdk:
 
 script: mvn clean verify
 
-before_script:
-  - pip install --user codecov
-
-after_success:
-  - codecov
