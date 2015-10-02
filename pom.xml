@@ -5,12 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.simpledb</groupId>
-    <artifactId>SimpleDB</artifactId>
+    <artifactId>simpledb-root</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>SimpleDB</name>
     <modules>
-        <module>core</module>
-        <module>benchmark</module>
+        <module>simpledb-core</module>
+        <module>simpledb-benchmark</module>
     </modules>
 
     <properties>
