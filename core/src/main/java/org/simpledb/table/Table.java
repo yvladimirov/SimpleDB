@@ -39,15 +39,6 @@ public class Table {
         addresses.add(address);
     }
 
-
-    public Object[] findOne() {
-        for (int i = 0; i < addresses.size(); i++) {
-            long address = addresses.get(i);
-            return fields.getValues(address);
-        }
-        return null;
-    }
-
     public Object[] findOne(int fieldNumber, Comparable value) {
         Index index = indexes.get(fieldNumber);
         if (index != null) {
@@ -59,11 +50,7 @@ public class Table {
                     return result;
             }
         } else {
-            for (int i = 0; i < addresses.size(); i++) {
-                Object[] result = fields.getValues(addresses.get(i));
-                if (result[fieldNumber].equals(value))
-                    return result;
-            }
+            return fullScan(fieldNumber, value);
         }
         return null;
     }
@@ -97,6 +84,21 @@ public class Table {
         }
         unsafe.freeMemory(address);
         return result;
+    }
+
+
+    public void update(int fieldNumber,Comparable value ,Comparable... values){
+        remove(fieldNumber,value);
+        add(values);
+    }
+
+    private Object[] fullScan(int fieldNumber, Comparable value) {
+        for (int i = 0; i < addresses.size(); i++) {
+            Object[] result = fields.getValues(addresses.get(i));
+            if (result[fieldNumber].equals(value))
+                return result;
+        }
+        return null;
     }
 
     public void drop() {

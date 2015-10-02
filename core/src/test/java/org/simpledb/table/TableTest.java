@@ -290,6 +290,28 @@ public class TableTest {
         }
 
         table.drop();
+    }
 
+    @Test
+    public void testUpdate() {
+        Table table = TableBuilder.builder().name("test")
+                .addField(FieldBuilder.builder().name("int").type(FieldType.INTEGER).indexing(true).build())
+                .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).indexing(true).build())
+                .addField(FieldBuilder.builder().name("string").type(FieldType.STRING).indexing(true).build())
+                .build();
+
+
+        table.add(1, 2l, "test");
+
+        table.update(0, 1, 1, 5l, "Test2");
+
+        Object[] result = table.findOne(0, 1);
+
+        assertEquals(3, result.length);
+        assertEquals(1, result[0]);
+        assertEquals(5l, result[1]);
+        assertEquals("Test2", result[2]);
+
+        table.drop();
     }
 }
