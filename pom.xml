@@ -12,6 +12,8 @@
     <modules>
         <module>simpledb-core</module>
         <module>simpledb-benchmark</module>
+        <module>simpledb-server</module>
+        <module>simpledb-client</module>
     </modules>
 
     <properties>
@@ -19,17 +21,36 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>net.sf.trove4j</groupId>
-            <artifactId>trove4j</artifactId>
-            <version>3.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>19.0-rc2</version>
-        </dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>net.sf.trove4j</groupId>
+                <artifactId>trove4j</artifactId>
+                <version>3.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>19.0-rc2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.12</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.1.3</version>
+            </dependency>
 
-    </dependencies>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
