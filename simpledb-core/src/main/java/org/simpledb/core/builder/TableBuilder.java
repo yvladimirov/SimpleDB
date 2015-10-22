@@ -3,6 +3,7 @@ package org.simpledb.core.builder;
 import com.google.common.collect.Lists;
 import org.simpledb.core.table.Field;
 import org.simpledb.core.table.Table;
+import org.simpledb.core.table.TableUnsafe;
 
 import java.util.List;
 
@@ -32,6 +33,6 @@ public class TableBuilder {
 
 
     public Table build() {
-        return new Table(name, fields.toArray(new Field[0]));
+        return new TableUnsafe(name, fields.toArray(new Field[0]));
     }
 }

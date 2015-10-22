@@ -10,14 +10,14 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by yvladimirov on 9/27/15.
  */
-public class TableTest {
+public class TableUnsafeTest {
 
     @Test
     public void testLongTablePutAndGetNotIndex() {
         Table table = TableBuilder.builder().name("test")
                 .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).build())
                 .build();
-        table.add(1l);
+        table.insert(1l);
 
         Object[] result = table.findOne(0, 1l);
         assertEquals(1, result.length);
@@ -36,7 +36,7 @@ public class TableTest {
                 .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).build())
                 .addField(FieldBuilder.builder().name("long2").type(FieldType.LONG).build())
                 .build();
-        table.add(1l, 5l);
+        table.insert(1l, 5l);
 
         Object[] result = table.findOne(0, 1l);
         assertEquals(2, result.length);
@@ -59,7 +59,7 @@ public class TableTest {
         Table table = TableBuilder.builder().name("test")
                 .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).indexing(true).build())
                 .build();
-        table.add(1l);
+        table.insert(1l);
 
         Object[] result = table.findOne(0, 1l);
         assertEquals(1, result.length);
@@ -78,7 +78,7 @@ public class TableTest {
                 .addField(FieldBuilder.builder().name("long").type(FieldType.LONG).indexing(true).build())
                 .addField(FieldBuilder.builder().name("long2").type(FieldType.LONG).indexing(true).build())
                 .build();
-        table.add(1l, 5l);
+        table.insert(1l, 5l);
 
         Object[] result = table.findOne(0, 1l);
         assertEquals(2, result.length);
@@ -101,7 +101,7 @@ public class TableTest {
         Table table = TableBuilder.builder().name("test")
                 .addField(FieldBuilder.builder().name("string").type(FieldType.STRING).build())
                 .build();
-        table.add("1l");
+        table.insert("1l");
 
         Object[] result = table.findOne(0, "1l");
         assertEquals(1, result.length);
@@ -121,7 +121,7 @@ public class TableTest {
                 .addField(FieldBuilder.builder().name("string2").type(FieldType.STRING).build())
                 .build();
 
-        table.add("1l", "5l");
+        table.insert("1l", "5l");
 
         Object[] result = table.findOne(0, "1l");
         assertEquals(2, result.length);
@@ -145,7 +145,7 @@ public class TableTest {
                 .addField(FieldBuilder.builder().name("string").type(FieldType.STRING).indexing(true).build())
                 .build();
 
-        table.add("1l");
+        table.insert("1l");
 
         Object[] result = table.findOne(0, "1l");
         assertEquals(1, result.length);
@@ -165,7 +165,7 @@ public class TableTest {
                 .addField(FieldBuilder.builder().name("string2").type(FieldType.STRING).indexing(true).build())
                 .build();
 
-        table.add("1l", "5l");
+        table.insert("1l", "5l");
 
         Object[] result = table.findOne(0, "1l");
         assertEquals(2, result.length);
@@ -189,7 +189,7 @@ public class TableTest {
                 .build();
 
         for (long l = 0; l < 1000000; l++) {
-            table.add(l);
+            table.insert(l);
         }
 
         Object[] result = table.findOne(0, 100000l);
@@ -208,7 +208,7 @@ public class TableTest {
                 .build();
 
         for (long l = 0; l < 1000000; l++) {
-            table.add(l);
+            table.insert(l);
         }
 
         for (long l = 0; l < 1000000; l++) {
@@ -228,7 +228,7 @@ public class TableTest {
                 .build();
 
         for (long l = 0; l < 1000000; l++) {
-            table.add("" + l);
+            table.insert("" + l);
         }
 
         for (long l = 0; l < 1000000; l++) {
@@ -248,13 +248,13 @@ public class TableTest {
                 .addField(FieldBuilder.builder().name("string").type(FieldType.STRING).indexing(true).build())
                 .build();
 
-        table.add("test");
+        table.insert("test");
 
         Object[] result = table.findOne(0, "test");
         assertEquals(1, result.length);
         assertEquals("test", result[0]);
 
-        result = table.remove(0, "test");
+        result = table.delete(0, "test");
         assertEquals(1, result.length);
         assertEquals("test", result[0]);
 
@@ -272,19 +272,19 @@ public class TableTest {
                 .build();
 
         for (int i = 0; i <= 1000; i++)
-            table.add(i);
+            table.insert(i);
 
         for (int i = 499; i <= 1000; i++) {
-            Object[] result = table.remove(0, i);
+            Object[] result = table.delete(0, i);
             assertEquals(1, result.length);
             assertEquals(i, result[0]);
         }
 
         for (int i = 499; i <= 1000; i++)
-            table.add(i);
+            table.insert(i);
 
         for (int i = 0; i <= 499; i++) {
-            Object[] result = table.remove(0, i);
+            Object[] result = table.delete(0, i);
             assertEquals(1, result.length);
             assertEquals(i, result[0]);
         }
@@ -301,7 +301,7 @@ public class TableTest {
                 .build();
 
 
-        table.add(1, 2l, "test");
+        table.insert(1, 2l, "test");
 
         table.update(0, 1, 1, 5l, "Test2");
 

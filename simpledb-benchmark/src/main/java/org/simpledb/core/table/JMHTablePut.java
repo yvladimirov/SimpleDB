@@ -80,38 +80,38 @@ public class JMHTablePut {
 
     @Benchmark
     public void tableLongWithoutIndex() {
-        tableLongWithoutIndex.add(counter++);
+        tableLongWithoutIndex.insert(counter++);
     }
 
     @Benchmark
     public void tableLong() {
-        tableLong.add(counter++);
+        tableLong.insert(counter++);
     }
 
     @Benchmark
     public void tableStringWithoutIndex() {
-        tableStringWithoutIndex.add("" + counter++);
+        tableStringWithoutIndex.insert("" + counter++);
     }
 
     @Benchmark
     public void tableString() {
-        tableString.add("" + counter++);
+        tableString.insert("" + counter++);
     }
 
     @Benchmark
     public void tableStringAndLongWithoutIndex() {
-        tableLongAndStringWithoutIndex.add(counter, "" + counter++);
+        tableLongAndStringWithoutIndex.insert(counter, "" + counter++);
     }
 
     @Benchmark
     public void tableStringAndLong() {
-        tableLongAndString.add(counter, "" + counter++);
+        tableLongAndString.insert(counter, "" + counter++);
     }
 
     @Benchmark
     public void tableBig() {
         counter++;
-        tableBig.add(counter, counter, counter, "" + counter, "" + counter, "" + counter, "" + counter, counter, counter, "" + counter);
+        tableBig.insert(counter, counter, counter, "" + counter, "" + counter, "" + counter, "" + counter, counter, counter, "" + counter);
     }
 
 

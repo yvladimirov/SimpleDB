@@ -62,12 +62,12 @@ public class JMHTableGet {
                 .build();
         for (long i = 0; i < 1000 * 1000; i++) {
             map.put(i, i);
-            tableLongWithoutIndex.add(i);
-            tableLong.add(i);
-            tableStringWithoutIndex.add("" + i);
-            tableString.add("" + i);
-            tableLongAndString.add(i, "" + i);
-            tableLongAndStringWithoutIndex.add(i, "" + i);
+            tableLongWithoutIndex.insert(i);
+            tableLong.insert(i);
+            tableStringWithoutIndex.insert("" + i);
+            tableString.insert("" + i);
+            tableLongAndString.insert(i, "" + i);
+            tableLongAndStringWithoutIndex.insert(i, "" + i);
 
         }
 
