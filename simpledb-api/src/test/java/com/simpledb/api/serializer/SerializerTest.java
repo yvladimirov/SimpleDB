@@ -5,25 +5,28 @@ import com.simpledb.api.messages.CreateTableMessage;
 import com.simpledb.api.messages.DeleteMessage;
 import com.simpledb.api.messages.DropTableMessage;
 import com.simpledb.api.messages.InsertMessage;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by yvladimirov on 10/25/15.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SerializerTest {
     private Serializer serializer = new Serializer();
 
 
     @Test
     public void testRequestDropTableMessage() throws Exception {
-        Request request = new Request(1, new DropTableMessage("testDrop"));
+        Request request = new Request(new DropTableMessage("testDrop"));
 
         byte[] bytes = serializer.serialize(request);
 
         request = serializer.deserialize(bytes, Request.class);
-        assertEquals(1, request.getRequestId());
+        assertEquals(4, request.getRequestId());
         assertTrue(request.getMessage() instanceof DropTableMessage);
         assertEquals("testDrop", ((DropTableMessage) request.getMessage()).getTableName());
     }
@@ -36,7 +39,7 @@ public class SerializerTest {
         message.addField("field2", CreateTableMessage.FieldType.LONG, false);
         message.addField("field3", CreateTableMessage.FieldType.STRING, true);
 
-        byte[] bytes = serializer.serialize(new Request(1, message));
+        byte[] bytes = serializer.serialize(new Request(message));
 
         Request request = serializer.deserialize(bytes, Request.class);
 
@@ -66,11 +69,11 @@ public class SerializerTest {
         InsertMessage message = new InsertMessage("testTable");
         message.addField("field1", 1).addField("field2", "1");
 
-        byte[] bytes = serializer.serialize(new Request(5, message));
+        byte[] bytes = serializer.serialize(new Request(message));
 
         Request request = serializer.deserialize(bytes, Request.class);
 
-        assertEquals(5, request.getRequestId());
+        assertEquals(3, request.getRequestId());
         assertTrue(request.getMessage() instanceof InsertMessage);
         assertEquals("testTable", message.getTableName());
 
@@ -87,11 +90,11 @@ public class SerializerTest {
         DeleteMessage message = new DeleteMessage("testTable");
         message.addField("field1", 1).addField("field2", "1");
 
-        byte[] bytes = serializer.serialize(new Request(5, message));
+        byte[] bytes = serializer.serialize(new Request(message));
 
         Request request = serializer.deserialize(bytes, Request.class);
 
-        assertEquals(5, request.getRequestId());
+        assertEquals(2, request.getRequestId());
         assertTrue(request.getMessage() instanceof DeleteMessage);
         assertEquals("testTable", message.getTableName());
 
