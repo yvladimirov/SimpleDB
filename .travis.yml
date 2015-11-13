@@ -4,6 +4,22 @@ language: java
 
 jdk:
   - oraclejdk8
+  
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "v3mT5eiSq0e6sQ5L+TCemrfynBtibvU4szlOOrPyMxI+O/86z7rv6TeJhJniyATHiboknAcD/doCt5NDmk95vsQrliM3OoTSZPsp8YYp+nIy21BIEzJMGE2Hbhusit7kWDL/t4sQ5jqGI0IgAyRPhq21+HXrzLwqhgvoJqlLfv4w0tCvisWKAy7dHhXWQqMS6cTKZwgtnRg6Wx8GON6sgLE1Lhq4kJaaTQQbDnzU1oDC8DGwSQLtqTOZGqgMaMWCu8zzn9Zq1uAUPUzVIHormRH5xlIXCFZHkpkfRHoJzBZYpQOzJ1CyxaaCoH2NCRs3i3PdQgvjM0vJrIh5VN0oACNuBVh0GSB1xvG3g8/EQdwZ4b3mIFwkOQScPUcmnRAFlRu3kSjoQivPi8BYCxnP29LAx0hlQyIqWOqMzG8GMVCMaEuKo4yd+Czsu+zPOwecYDFu16IXIarYI0eKz83GlYsMk5LpJcz8B303dXZf+qgNGKF7O93KiD8wiM6AxmMzcmg9lXAogbczKxO4uc0h0NgeyspjU6frIBNsQASMk7Pu6QV9E+qI1cMgxN6kRtN6rnbjfop5KMNGVyA/jgPi1ZQXsc5OYnn0ctS4h6KZoLUpGBLEkp8ZYH1765/HyclDO+E5HEuZWeoxzxzLgNiuGVLpuR+dKmH+QXjmxxQwDVU="
 
+
+addons:
+  coverity_scan:
+    project:
+      name: "yvladimirov/SimpleDB"
+      description: "Build submitted via Travis CI"
+    notification_email: creus86@mail.ru
+    build_command_prepend: "mvn clean"
+    build_command:   "mvn -DskipTests=true compile"
+    branch_pattern: coverity_scan
+    
 script: mvn clean verify
-
