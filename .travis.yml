@@ -20,6 +20,6 @@ addons:
     notification_email: creus86@mail.ru
     build_command_prepend: "mvn clean"
     build_command:   "mvn -DskipTests=true compile"
-    branch_pattern: coverity_scan
+    branch_pattern: master
     
 script: mvn clean verify
