@@ -1,6 +1,9 @@
 # SimpleDB
 [![Build Status](https://travis-ci.org/yvladimirov/SimpleDB.svg)](https://travis-ci.org/yvladimirov/SimpleDB)
-
+<a href="https://scan.coverity.com/projects/yvladimirov-simpledb">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/7014/badge.svg"/>
+</a>
 
 Simple in memory offheap Database. Index in heap, data in direct memory
 
