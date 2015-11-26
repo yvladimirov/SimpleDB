@@ -7,18 +7,18 @@ import java.util.Map;
  * Created by yvladimirov on 10/26/15.
  */
 public class InsertMessage extends Message {
-    private Map<String, Comparable> fields = new HashMap<>();
+    private Map<Integer, Comparable> fields = new HashMap<>();
 
     public InsertMessage(String tableName) {
         super(tableName);
     }
 
-    public InsertMessage addField(String name, Comparable value) {
-        fields.put(name, value);
+    public InsertMessage addField(int fieldNumber, Comparable value) {
+        fields.put(fieldNumber, value);
         return this;
     }
 
-    public Map<String, Comparable> getFields() {
+    public Map<Integer, Comparable> getFields() {
         return fields;
     }
 }

@@ -14,6 +14,9 @@ public class Field {
         this.indexing = indexing;
     }
 
+    public String getName() {
+        return name;
+    }
 
     public void write(long address, Object value) {
         type.getWriter().write(address, value);

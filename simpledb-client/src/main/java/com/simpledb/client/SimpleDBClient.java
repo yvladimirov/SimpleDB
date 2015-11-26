@@ -5,6 +5,7 @@ import com.simpledb.api.Response;
 import com.simpledb.api.messages.CreateTableMessage;
 import com.simpledb.api.messages.DeleteMessage;
 import com.simpledb.api.messages.InsertMessage;
+import com.simpledb.api.messages.SelectMessage;
 import com.simpledb.client.network.TCPConnectionManager;
 
 import java.io.IOException;
@@ -21,20 +22,24 @@ public class SimpleDBClient {
     }
 
 
-    public void createTable(CreateTableMessage message) throws Exception {
-        Response response = connectionManager.send(new Request(message));
+    public Response createTable(CreateTableMessage message) throws Exception {
+        return connectionManager.send(new Request(message));
     }
 
-    public void dropTable(DeleteMessage message) throws Exception {
-        connectionManager.send(new Request(message));
+    public Response dropTable(DeleteMessage message) throws Exception {
+        return connectionManager.send(new Request(message));
     }
 
-    public void insert(InsertMessage message) throws Exception {
-        connectionManager.send(new Request(message));
+    public Response insert(InsertMessage message) throws Exception {
+        return connectionManager.send(new Request(message));
     }
 
-    public void delete(DeleteMessage message) throws Exception {
-        connectionManager.send(new Request(message));
+    public Response delete(DeleteMessage message) throws Exception {
+        return connectionManager.send(new Request(message));
+    }
+
+    public Response select(SelectMessage message) throws Exception {
+        return connectionManager.send(new Request(message));
     }
 
 

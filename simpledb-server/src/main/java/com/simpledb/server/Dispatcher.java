@@ -1,9 +1,11 @@
 package com.simpledb.server;
 
+import com.google.common.collect.Lists;
 import com.simpledb.api.Request;
 import com.simpledb.api.Response;
 import com.simpledb.api.messages.CreateTableMessage;
 import com.simpledb.api.messages.InsertMessage;
+import com.simpledb.api.messages.SelectMessage;
 import com.simpledb.api.serializer.Serializer;
 import com.simpledb.server.table.TableManager;
 import org.simpledb.core.builder.TableBuilder;
@@ -16,7 +18,11 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by yvladimirov on 10/22/15.
@@ -33,28 +39,31 @@ public class Dispatcher {
 
     public void handle(SocketChannel channel, byte[] bytes) {
         try {
-//            logger.info("{}",counter.get());
-            if(counter.incrementAndGet()%100000==0){
-                logger.info("100000 transaction by {}", System.currentTimeMillis()-times);
-                times = System.currentTimeMillis();
-            }
-
             Request request = serializer.deserialize(bytes, Request.class);
 
             if (request.getMessage() instanceof CreateTableMessage) {
-                handleCreateTable((CreateTableMessage)request.getMessage());
-                writeResponse(channel, new Response(request.getRequestId(), null));
+                handleCreateTable((CreateTableMessage) request.getMessage());
+                writeResponse(channel, new Response(request.getRequestId()));
             } else if (request.getMessage() instanceof InsertMessage) {
-                handleInsertTable((InsertMessage)request.getMessage());
-                writeResponse(channel, new Response(request.getRequestId(), null));
+                handleInsert((InsertMessage) request.getMessage());
+                writeResponse(channel, new Response(request.getRequestId()));
+            } else if (request.getMessage() instanceof SelectMessage) {
+                List<Comparable[]> result = handleSelect((SelectMessage) request.getMessage());
+                writeResponse(channel, new Response(request.getRequestId(), result.stream().map(Response.Row::new).collect(toList())));
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
     }
 
-    private void handleInsertTable(InsertMessage message) throws IOException {
+    private List<Comparable[]> handleSelect(SelectMessage message) {
+        Table table = tableManager.getTable(message.getTableName());
+        Comparable[] result = table.findOne(message.getFieldNumber(), message.getFieldValue());
+//        logger.info(Arrays.toString(result));
+        return Arrays.<Comparable[]>asList(result);
+    }
 
+    private void handleInsert(InsertMessage message) throws IOException {
         Table table = tableManager.getTable(message.getTableName());
         table.insert(message.getFields().values().toArray(new Comparable[message.getFields().size()]));
     }
@@ -62,7 +71,7 @@ public class Dispatcher {
     private void handleCreateTable(CreateTableMessage message) {
         TableBuilder builder = TableBuilder.builder();
         builder.name(message.getTableName());
-        for(CreateTableMessage.Field field:message.getFields()){
+        for (CreateTableMessage.Field field : message.getFields()) {
             builder.addField(new Field(FieldType.valueOf(field.getType().name()), field.getFieldName(), field.isIndexing()));
         }
         tableManager.createTable(builder);
